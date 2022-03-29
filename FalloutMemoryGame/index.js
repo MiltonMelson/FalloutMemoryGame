@@ -65,7 +65,8 @@ function timer() {
       if (sec < 0) {
          clearInterval(timer);
          document.getElementById("board").style.display = "none";
-         document.getElementById("gameover").innerHTML = "<h1>GAME OVER</h1>"
+         document.getElementById("gameover").innerHTML = "<h1>GAME OVER</h1>";
+         window.alert("Your Score: " + score.innerHTML);
       }
    }, 1000);
 }
