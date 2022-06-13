@@ -5,6 +5,7 @@ let lockBoard = false;
 let firstCard, secondCard;
 let score = document.getElementById('score');
 let startbutton = document.getElementById("start");
+let gameWin = 0;
 
 function flipCard() {
    if (lockBoard) return;
@@ -26,7 +27,13 @@ function flipCard() {
 
 function checkForMatch() {
    let isMatch = firstCard.dataset.framework === secondCard.dataset.framework;
-   isMatch ? disableCard() : unflipCards();
+   if (isMatch) {
+      disableCard();
+      gameWin++;
+   }
+   else {
+      unflipCards();
+   }
 }
 
 function disableCard() {
@@ -58,15 +65,17 @@ function resetBoard() {
 })();
 
 function timer() {
-   var sec = 30;
+   var sec = 50;
    var timer = setInterval(function () {
-      document.getElementById('timer').innerHTML = '00:' + sec;
+      if (sec < 10) {
+         document.getElementById('timer').innerHTML = '00:0' + sec;
+      } else {
+         document.getElementById('timer').innerHTML = '00:' + sec;
+      }
       sec--;
-      if (sec < 0) {
+      if (sec < 0 || gameWin == 6) {
          clearInterval(timer);
-         document.getElementById("board").style.display = "none";
-         document.getElementById("gameover").innerHTML = "<h1>GAME OVER</h1>";
-         window.alert("Your Score: " + score.innerHTML);
+         gameOver();
       }
    }, 1000);
 }
@@ -79,4 +88,16 @@ function startGame() {
 
 function reset() {
    window.location.reload();
+}
+
+function gameOver() {
+   document.getElementById("board").style.display = "none";
+   let gameOverEle = document.getElementById("gameover");
+   gameOverEle.innerHTML = "<h1>GAME OVER</h1><br>";
+   if (gameWin == 6) {
+      gameOverEle.innerHTML += "<h1>You Won!</h1>";
+   }
+   else {
+      gameOverEle.innerHTML += "<h1>Better Luck Next Time</h1>";
+   }
 }
